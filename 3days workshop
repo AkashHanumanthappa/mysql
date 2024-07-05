@@ -1,0 +1,136 @@
+select *
+from emp e natural join dept d ;
+
+select e1.ename,e2.job
+from emp e1
+natural join emp e2  where e1.deptno=10 and e1.deptno=20 ;
+
+/* w a d name of the employee and the mangers salry if employee and manager both earn more than 2300*/
+select e1.ename,e2.sal
+from emp e1
+natural join emp e2  where e1.sal=2300 and e2.sal=2300 ;
+
+/* w a d emp name,mgr name along with their anual salary if employee works in dep10,20 and managers sl is > emp sal */
+/* emp name and mgr sal for all the emp if mgr sal ends with 50*/
+
+/* list the name and sal of the employees who worked in the same department as the president show each employee dep name and sal in decs*/
+select e1.ename,e1.sal,d.dname
+from emp e1
+natural join dept d
+where deptno=all( select e2.deptno from emp e2 where job='president')  order by sal asc;
+
+/* find the dep name and avg sal of employees in each dep who were hired after the 1980 and display the dep name along with the avg sal in desc order of avg sal*/
+SELECT DISTINCT(upper(d.dname)), avg(sal)
+FROM emp NATURAL JOIN dept d
+WHERE hiredate > '1980-12-31'
+GROUP BY d.dname
+ORDER BY avg(sal) desc;
+
+/*retrieve the names of the employee who have the hire date as another employee inthe same dep display ename & their hire date along with their depname*/
+SELECT distinct(e1.ename),e1.hiredate,e1.deptno,e2.ename
+FROM emp e1 cross JOIN emp e2
+on  e1.deptno=e2.deptno
+WHERE e1.hiredate=e2.hiredate and e1.empno<>e2.empno ;
+select deptno, count(*) from emp group by deptno order by count(*) asc;
+select *,
+ case when deptno=10 then 'accounting'
+     when deptno=20 then  'reaserch'
+     when deptno=30 then  'sales'
+     else 'no dep'
+    end as department_name from emp;
+select * from emp;
+select 
+c.ename as clerk,
+s.ename as salesman,
+m.ename as manager,
+p.ename as president,
+a.ename as analyst
+from emp e
+left join( select ename from emp where job='clerk' order by ename asc)c on e.ename=c.ename
+left join( select ename from emp where job='salesman' order by ename asc)s on e.ename=s.ename
+left join( select ename from emp where job='manager' order by ename asc)m on e.ename=m.ename
+left join( select ename from emp where job='president' order by ename asc)p on e.ename=p.ename
+left join( select ename from emp where job='analyst' order by ename asc)a on e.ename=a.ename order by e.ename;
+
+select * from emp
+where (deptno,sal) in (select deptno,max(sal) from emp group by deptno);
+ 
+select * from dept
+where deptno not in (select deptno from emp);
+
+select ename,deptno,sal from emp
+where sal>any(select avg(sal) from emp group by deptno);
+
+select e1.ename,e1.deptno,sal from emp e1
+where sal>(select avg(sal) from emp e2 where e2.deptno=e1.deptno);
+
+select deptno from emp e1 where deptno not in (select deptno from dept d where d.deptno=e1.deptno);
+select deptno from dept d where deptno not in (select deptno from emp e1 where d.deptno=e1.deptno);
+select *
+from emp e natural join dept d ;
+
+select e1.ename,e2.job
+from emp e1
+natural join emp e2  where e1.deptno=10 and e1.deptno=20 ;
+
+/* w a d name of the employee and the mangers salry if employee and manager both earn more than 2300*/
+select e1.ename,e2.sal
+from emp e1
+natural join emp e2  where e1.sal=2300 and e2.sal=2300 ;
+
+/* w a d emp name,mgr name along with their anual salary if employee works in dep10,20 and managers sl is > emp sal */
+/* emp name and mgr sal for all the emp if mgr sal ends with 50*/
+
+/* list the name and sal of the employees who worked in the same department as the president show each employee dep name and sal in decs*/
+select e1.ename,e1.sal,d.dname
+from emp e1
+natural join dept d
+where deptno=all( select e2.deptno from emp e2 where job='president')  order by sal asc;
+
+/* find the dep name and avg sal of employees in each dep who were hired after the 1980 and display the dep name along with the avg sal in desc order of avg sal*/
+SELECT DISTINCT(upper(d.dname)), avg(sal)
+FROM emp NATURAL JOIN dept d
+WHERE hiredate > '1980-12-31'
+GROUP BY d.dname
+ORDER BY avg(sal) desc;
+
+/*retrieve the names of the employee who have the hire date as another employee inthe same dep display ename & their hire date along with their depname*/
+SELECT distinct(e1.ename),e1.hiredate,e1.deptno,e2.ename
+FROM emp e1 cross JOIN emp e2
+on  e1.deptno=e2.deptno
+WHERE e1.hiredate=e2.hiredate and e1.empno<>e2.empno ;
+select deptno, count(*) from emp group by deptno order by count(*) asc;
+select *,
+ case when deptno=10 then 'accounting'
+     when deptno=20 then  'reaserch'
+     when deptno=30 then  'sales'
+     else 'no dep'
+    end as department_name from emp;
+select * from emp;
+select 
+c.ename as clerk,
+s.ename as salesman,
+m.ename as manager,
+p.ename as president,
+a.ename as analyst
+from emp e
+left join( select ename from emp where job='clerk' order by ename asc)c on e.ename=c.ename
+left join( select ename from emp where job='salesman' order by ename asc)s on e.ename=s.ename
+left join( select ename from emp where job='manager' order by ename asc)m on e.ename=m.ename
+left join( select ename from emp where job='president' order by ename asc)p on e.ename=p.ename
+left join( select ename from emp where job='analyst' order by ename asc)a on e.ename=a.ename order by e.ename;
+
+select * from emp
+where (deptno,sal) in (select deptno,max(sal) from emp group by deptno);
+ 
+select * from dept
+where deptno not in (select deptno from emp);
+
+select ename,deptno,sal from emp
+where sal>any(select avg(sal) from emp group by deptno);
+
+select e1.ename,e1.deptno,sal from emp e1
+where sal>(select avg(sal) from emp e2 where e2.deptno=e1.deptno);
+
+select deptno from emp e1 where deptno not in (select deptno from dept d where d.deptno=e1.deptno);
+select deptno from dept d where deptno not in (select deptno from emp e1 where d.deptno=e1.deptno);
